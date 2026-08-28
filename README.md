@@ -62,46 +62,46 @@ npx skills add sightkick-so/skill
 ### AI visibility
 | | Tool | |
 |---|---|---|
-| R | `visibility_summary` | Mentions, citations and recommendations across engines |
-| R | `visibility_prompts` | The tracked prompt panel, with per-prompt verdicts |
-| R | `visibility_prompt` | One prompt with its per-engine run list |
-| R | `visibility_answer` | A stored AI answer, verbatim |
-| R | `visibility_sources` | The pages AI answers were built from |
-| R | `visibility_gaps` | Where competitors are named and you aren't |
-| W | `prompts_track` | Start tracking a buyer prompt |
-| ! | `prompts_retire` | Stop tracking one, freeing a slot |
+| R | `get_visibility_summary` | Mentions, citations and recommendations across engines |
+| R | `list_tracked_prompts` | The tracked prompt panel, with per-prompt verdicts |
+| R | `get_tracked_prompt` | One prompt with its per-engine run list |
+| R | `get_ai_answer` | A stored AI answer, verbatim |
+| R | `list_cited_sources` | The pages AI answers were built from |
+| R | `list_visibility_gaps` | Where competitors are named and you aren't |
+| W | `track_prompt` | Start tracking a buyer prompt |
+| ! | `retire_prompt` | Stop tracking one, freeing a slot |
 
 ### Proof and research
 | | Tool | |
 |---|---|---|
-| R | `metrics_gsc` | Real Search Console clicks, impressions, CTR, position |
-| R | `keywords_list` | The keyword pool, ranked by Opportunity |
-| R | `outreach_list` | The off-page coverage ledger |
-| R | `workspace_get` | The connected website: engines, locale, publish mode |
-| R | `connections_list` | Connected CMS destinations |
-| R | `activity_list` | The attributed activity feed |
-| R | `guidance_search` | Sightkick's SEO/AEO methodology |
+| R | `get_search_metrics` | Real Search Console clicks, impressions, CTR, position |
+| R | `list_keywords` | The keyword pool, ranked by Opportunity |
+| R | `list_outreach` | The off-page coverage ledger |
+| R | `get_workspace` | The connected website: engines, locale, publish mode |
+| R | `list_connections` | Connected CMS destinations |
+| R | `list_activity` | The attributed activity feed |
+| R | `search_guidance` | Sightkick's SEO/AEO methodology |
 
 ### Articles
 | | Tool | |
 |---|---|---|
-| R | `articles_list` / `articles_get` | Find an article, read its content |
-| W | `articles_create_draft` | Write your own draft as semantic HTML |
-| W | `articles_update` | Edit an article's content or metadata |
-| W | `articles_generate` | Delegate to Sightkick's staged pipeline |
-| R | `articles_score` | Grade a draft on five pillars, with fixes |
-| W | `articles_queue` / `articles_unqueue` | Put it on the plan, or take it off |
+| R | `list_articles` / `get_article` | Find an article, read its content |
+| W | `create_article_draft` | Write your own draft as semantic HTML |
+| W | `update_article` | Edit an article's content or metadata |
+| W | `generate_article` | Delegate to Sightkick's staged pipeline |
+| R | `score_article` | Grade a draft on five pillars, with fixes |
+| W | `queue_article` / `unqueue_article` | Put it on the plan, or take it off |
 
 ### Shipping
 | | Tool | |
 |---|---|---|
-| R | `calendar_get` | The publishing calendar |
-| W | `calendar_reschedule` | Move an article, insert-and-slide |
-| W | `autopilot_set_mode` | The writing dial: auto, drafts, manual |
-| R | `actions_list` | The to-do list, each row owned by you or the autopilot |
-| W | `actions_complete` | Mark one done, with a result note |
-| ! | `actions_skip` | Dismiss one (remembered 60 days) |
-| W | `actions_request` | Order an article from the pipeline |
+| R | `get_calendar` | The publishing calendar |
+| W | `reschedule_article` | Move an article, insert-and-slide |
+| W | `set_autopilot_mode` | The writing dial: auto, drafts, manual |
+| R | `list_actions` | The to-do list, each row owned by you or the autopilot |
+| W | `complete_action` | Mark one done, with a result note |
+| ! | `skip_action` | Dismiss one (remembered 60 days) |
+| W | `request_action` | Order an article from the pipeline |
 | ! | `publish_article` | Publish to the connected CMS |
 
 ## Rules
