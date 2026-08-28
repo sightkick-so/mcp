@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "so.sightkick/mcp",
+  "title": "Sightkick",
+  "description": "Track AI visibility (ChatGPT, Gemini, AI Overviews), research SEO keywords, write, publish, prove.",
+  "version": "1.0.0",
+  "websiteUrl": "https://sightkick.so/mcp",
+  "repository": {
+    "url": "https://github.com/sightkick-so/mcp",
+    "source": "github",
+    "id": "1349299991"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.sightkick.so/mcp"
+    }
+  ]
+}
