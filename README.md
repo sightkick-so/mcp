@@ -11,7 +11,7 @@ Overviews and AI Mode answer your buyers' questions, researches the keywords
 worth winning, writes and publishes articles on a daily calendar, and proves
 outcomes with Google Search Console data.
 
-This server hands all of that to your agent: 31 tools over streamable HTTP,
+This server hands all of that to your agent: 41 tools over streamable HTTP,
 authenticated with OAuth 2.1. Agent access is included in every paid plan —
 it is never a separate tier.
 
@@ -76,7 +76,13 @@ npx skills add sightkick-so/skill
 |---|---|---|
 | R | `get_search_metrics` | Real Search Console clicks, impressions, CTR, position |
 | R | `list_keywords` | The keyword pool, ranked by Opportunity |
-| R | `list_outreach` | The off-page coverage ledger |
+| R | `research_keywords` | Keyword ideas and long-tail around a topic — on the monthly research allowance |
+| R | `competitor_keywords` | What any domain ranks for, with positions |
+| R | `gap_keywords` | What a rival ranks for that this site doesn't |
+| R | `get_serp` | One keyword's live top-10, People Also Ask, and the AI Overview's cited pages |
+| W | `save_keywords` | Add keywords to the pool — graded and scored right away |
+| R | `list_outreach` | The off-page prospect ledger |
+| R | `list_backlinks` | Every watched link and its verdict: live, dropped, checking, not found |
 | R | `get_workspace` | The connected website: engines, locale, publish mode |
 | R | `list_connections` | Connected CMS destinations |
 | R | `list_activity` | The attributed activity feed |
@@ -91,6 +97,14 @@ npx skills add sightkick-so/skill
 | W | `generate_article` | Delegate to Sightkick's staged pipeline |
 | R | `score_article` | Grade a draft on five pillars, with fixes |
 | W | `queue_article` / `unqueue_article` | Put it on the plan, or take it off |
+
+### Backlinks
+| | Tool | |
+|---|---|---|
+| W | `approve_prospect` | Find the editorial contact and draft the pitch — nothing sent |
+| ! | `send_prospect` | Book the pitch into the send queue (a real email from the user's inbox) |
+| ! | `dismiss_prospect` | Decline a prospect for good |
+| W | `run_prospect_discovery` | Run the daily prospect discovery now |
 
 ### Shipping
 | | Tool | |
