@@ -11,7 +11,7 @@ Overviews and AI Mode answer your buyers' questions, researches the keywords
 worth winning, writes and publishes articles on a daily calendar, and proves
 outcomes with Google Search Console data.
 
-This server hands all of that to your agent: 41 tools over streamable HTTP,
+This server hands all of that to your agent: 42 tools over streamable HTTP,
 authenticated with OAuth 2.1. Agent access is included in every paid plan —
 it is never a separate tier.
 
@@ -95,7 +95,7 @@ npx skills add sightkick-so/skill
 | W | `create_article_draft` | Write your own draft as semantic HTML |
 | W | `update_article` | Edit an article's content or metadata |
 | W | `generate_article` | Delegate to Sightkick's staged pipeline |
-| R | `score_article` | Grade a draft on five pillars, with fixes |
+| R | `score_article` | Grade a draft on four pillars, with fixes |
 | W | `queue_article` / `unqueue_article` | Put it on the plan, or take it off |
 
 ### Backlinks
@@ -103,16 +103,17 @@ npx skills add sightkick-so/skill
 |---|---|---|
 | W | `approve_prospect` | Find the editorial contact and draft the pitch — nothing sent |
 | ! | `send_prospect` | Book the pitch into the send queue (a real email from the user's inbox) |
-| ! | `dismiss_prospect` | Decline a prospect for good |
+| ! | `dismiss_prospect` | Decline a prospect for good — its whole site goes on the Blocklist |
 | W | `run_prospect_discovery` | Run the daily prospect discovery now |
+| W | `add_prospect` | Add a page by URL as a prospect, verified and scored like a found one |
 
 ### Shipping
 | | Tool | |
 |---|---|---|
 | R | `get_calendar` | The publishing calendar |
 | W | `reschedule_article` | Move an article, insert-and-slide |
-| W | `set_autopilot_mode` | The writing dial: auto, drafts, manual |
-| R | `list_actions` | The to-do list, each row owned by you or the autopilot |
+| W | `set_autopilot_mode` | The writing dial: autopilot, drafts, manual — moving it up needs `confirm: true` |
+| R | `list_actions` | The owner's to-do list: what only a person with the keys can do |
 | W | `complete_action` | Mark one done, with a result note |
 | ! | `skip_action` | Dismiss one (remembered 60 days) |
 | W | `request_action` | Order an article from the pipeline |
@@ -124,8 +125,9 @@ npx skills add sightkick-so/skill
   or touch another.
 - **Every write is attributed.** Each call lands in the workspace's activity
   feed against the OAuth client that made it.
-- **Limits are enforced, not documented.** One generation in flight and five
-  manual runs a day, 25 scores a day, 20 writes an hour per workspace.
+- **Limits are enforced, not documented.** One generation in flight and the
+  plan's monthly article budget, 25 scores a day, 20 writes an hour per
+  workspace.
 - **Publishing needs `confirm: true`**, unless the workspace already runs on
   full auto. It is meant to represent real user approval, never an automatic
   retry.
