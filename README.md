@@ -48,12 +48,9 @@ the endpoint.
 **Anything else that speaks MCP over streamable HTTP** — add a custom or remote
 server and paste the same endpoint.
 
-There is also a [skill](https://github.com/sightkick-so/skill) that teaches an
-agent how to use these tools well, rather than just what they are:
-
-```sh
-npx skills add sightkick-so/skill
-```
+There is nothing else to install. The server's own instructions tell a
+connected agent how to use these tools well, not just what they are, and
+`search_guidance` returns Sightkick's SEO/AEO method on demand.
 
 ## Tools
 
@@ -137,7 +134,6 @@ npx skills add sightkick-so/skill
 - [Server page](https://sightkick.so/mcp) — the human version of this document
 - [Agent guide](https://sightkick.so/llm-info) — the same catalog, written for LLM retrieval
 - [Server card](https://app.sightkick.so/.well-known/mcp/server-card.json)
-- [Skill](https://github.com/sightkick-so/skill) — how to use the tools well
 - [sightkick.so](https://sightkick.so) · [Privacy](https://sightkick.so/privacy)
 
 MIT © Sprike LLC (Sightkick)
