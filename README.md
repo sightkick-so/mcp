@@ -11,7 +11,7 @@ Overviews and AI Mode answer your buyers' questions, researches the keywords
 worth winning, writes and publishes articles on a daily calendar, and proves
 outcomes with Google Search Console data.
 
-This server hands all of that to your agent: 42 tools over streamable HTTP,
+This server hands all of that to your agent: 46 tools over streamable HTTP,
 authenticated with OAuth 2.1. Agent access is included in every paid plan —
 it is never a separate tier.
 
@@ -67,6 +67,14 @@ connected agent how to use these tools well, not just what they are, and
 | R | `list_visibility_gaps` | Where competitors are named and you aren't |
 | W | `track_prompt` | Start tracking a buyer prompt |
 | ! | `retire_prompt` | Stop tracking one, freeing a slot |
+
+### Competitors
+| | Tool | |
+|---|---|---|
+| R | `list_competitors` | Tracked rivals, whether each saved domain is really theirs, and brands the engines name that nobody tracks |
+| W | `track_competitor` | Put a rival on the board — its site and the name buyers use |
+| ! | `untrack_competitor` | Take one off the board, keeping its history |
+| W | `set_competitor_domain` | Move a rival to its real site — the verified suggestion, or one you give |
 
 ### Proof and research
 | | Tool | |
