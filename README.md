@@ -11,7 +11,7 @@ Overviews and AI Mode answer your buyers' questions, researches the keywords
 worth winning, writes and publishes articles on a daily calendar, and proves
 outcomes with Google Search Console data.
 
-This server hands all of that to your agent: 46 tools over streamable HTTP,
+This server hands all of that to your agent: 56 tools over streamable HTTP,
 authenticated with OAuth 2.1. Agent access is included in every paid plan —
 it is never a separate tier.
 
@@ -111,6 +111,20 @@ connected agent how to use these tools well, not just what they are, and
 | ! | `dismiss_prospect` | Decline a prospect for good — its whole site goes on the Blocklist |
 | W | `run_prospect_discovery` | Run the daily prospect discovery now |
 | W | `add_prospect` | Add a page by URL as a prospect, verified and scored like a found one |
+| R | `list_directories` | The directories this business should be listed on, ranked by how often AI answers cite each, with where it stands |
+
+### Improvements
+| | Tool | |
+|---|---|---|
+| R | `list_opportunities` | The week's list: published articles where one small change could win clicks or an AI answer back |
+| ! | `approve_opportunity` | Queue one on the next free day — the page is changed that day, the old version kept |
+| ! | `skip_opportunity` | Take one off the list (remembered 60 days) |
+| W | `restore_opportunity` | Bring a skipped one back |
+| W | `unqueue_improvement` | Take a queued change off its day, back into the list |
+| R | `list_improvement_results` | Every change made, and its result 28 days after Google read the page again |
+| ! | `undo_improvement` | Take a live change out of its page — needs `confirm: true` |
+| ! | `redo_improvement` | Put an undone change back and measure it again — needs `confirm: true` |
+| W | `set_improvements_mode` | Automatic or ask-me-first — switching to automatic needs `confirm: true` |
 
 ### Shipping
 | | Tool | |
