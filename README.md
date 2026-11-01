@@ -1,19 +1,21 @@
 # Sightkick MCP server
 
 > **This repo is metadata and documentation, not the server's source.** Sightkick
-> is a hosted product; the server runs at `https://app.sightkick.so/mcp` and there
-> is nothing here to install or self-host. What you'll find is [`server.json`](server.json)
-> — the [MCP Registry](https://registry.modelcontextprotocol.io) entry — plus the
-> connection instructions and tool catalog below.
+> is a hosted product: the server runs at `https://app.sightkick.so/mcp` and there
+> is nothing here to install or self-host. What you'll find is [`server.json`](server.json),
+> the [MCP Registry](https://registry.modelcontextprotocol.io) entry, plus the
+> connection steps and the tool catalog below.
 
-Sightkick is an SEO/AEO autopilot. It tracks how ChatGPT, Gemini, Google AI
-Overviews and AI Mode answer your buyers' questions, researches the keywords
-worth winning, writes and publishes articles on a daily calendar, and proves
-outcomes with Google Search Console data.
+Sightkick is the agentic SEO and GEO platform your website runs on. It tracks
+how ChatGPT, Gemini, Google AI Overviews and AI Mode answer your buyers'
+questions, researches the keywords worth winning, publishes pages on a
+schedule, improves the live ones one measured change at a time, runs outreach
+to the pages AI answers cite, and proves outcomes with Google Search Console
+data.
 
-This server hands all of that to your agent: 56 tools over streamable HTTP,
-authenticated with OAuth 2.1. Agent access is included in every paid plan —
-it is never a separate tier.
+This server hands all of it to your agent: 36 tools over streamable
+HTTP, authenticated with OAuth 2.1. Agent access comes with both packages
+(Standard and Pro), never as an add-on.
 
 ## Endpoint
 
@@ -22,7 +24,7 @@ https://app.sightkick.so/mcp
 ```
 
 There is no API key. The first call opens a sign-in, and one OAuth grant is
-bound to one workspace (one website) — the consent screen carries a workspace
+bound to one workspace (one website): the consent screen carries a workspace
 selector.
 
 ## Connect
@@ -33,128 +35,149 @@ selector.
 claude mcp add --transport http sightkick https://app.sightkick.so/mcp
 ```
 
-**Claude** (desktop and claude.ai) — Settings → Connectors → "Add custom
+Then `/mcp`, pick sightkick and approve the sign-in.
+
+**Codex**
+
+```sh
+codex mcp add sightkick --url https://app.sightkick.so/mcp
+codex mcp login sightkick
+```
+
+**Claude** (desktop and claude.ai): Settings → Connectors → "Add custom
 connector", paste the endpoint.
 
-**ChatGPT** — Settings → Connectors, turn on Developer mode, "Add", paste the
+**ChatGPT**: Settings → Connectors, turn on Developer mode, "Add", paste the
 endpoint.
 
-**Cursor** — Settings → MCP → "Add server", pick streamable HTTP, paste the
-endpoint.
+**Anything else that speaks MCP over streamable HTTP**: add a remote server
+and paste the same endpoint. Every client's steps, written for an agent to
+follow: [sightkick.so/connect/agent.md](https://sightkick.so/connect/agent.md).
 
-**VS Code** — run "MCP: Add Server" from the command palette, pick HTTP, paste
-the endpoint.
+**No MCP client** (a cron job, a CI step, a cloud agent): the same tools run
+on a workspace API key through the CLI, `npx -y sightkick`
+([guide](https://sightkick.so/connect/cli.md)), and the HTTP API at
+`https://api.sightkick.so/v1` ([guide](https://sightkick.so/connect/api.md),
+[OpenAPI 3.1](https://api.sightkick.so/v1/openapi.json)).
 
-**Anything else that speaks MCP over streamable HTTP** — add a custom or remote
-server and paste the same endpoint.
-
-There is nothing else to install. The server's own instructions tell a
-connected agent how to use these tools well, not just what they are, and
-`search_guidance` returns Sightkick's SEO/AEO method on demand.
+The playbook ships inside the server: its instructions reach every client on
+connect, telling a connected agent how to use these tools well, not just what
+they are, and `get_guidance` returns Sightkick's SEO and GEO method on demand.
+There is no separate skill to install.
 
 ## Tools
 
-`R` read-only · `W` write · `!` destructive, requires explicit confirmation.
+Each tool is one thing an agent works on, verb first. A read takes a `view`, a
+change an `action` (`check_web` takes `check`, `research_keywords` `from`,
+`research_backlinks` `lookup`), and each tool's description lists them with
+their fields.
 
-### AI visibility
-| | Tool | |
-|---|---|---|
-| R | `get_visibility_summary` | Mentions, citations and recommendations across engines |
-| R | `list_tracked_prompts` | The tracked prompt panel, with per-prompt verdicts |
-| R | `get_tracked_prompt` | One prompt with its per-engine run list |
-| R | `get_ai_answer` | A stored AI answer, verbatim |
-| R | `list_cited_sources` | The pages AI answers were built from |
-| R | `list_visibility_gaps` | Where competitors are named and you aren't |
-| W | `track_prompt` | Start tracking a buyer prompt |
-| ! | `retire_prompt` | Stop tracking one, freeing a slot |
+`R` read-only, runs unasked in most apps · `W` changes something or spends an
+allowance, so the app asks first · `!` has an action that deletes something,
+takes a page down or sends an email (destructiveHint).
 
-### Competitors
-| | Tool | |
-|---|---|---|
-| R | `list_competitors` | Tracked rivals, whether each saved domain is really theirs, and brands the engines name that nobody tracks |
-| W | `track_competitor` | Put a rival on the board — its site and the name buyers use |
-| ! | `untrack_competitor` | Take one off the board, keeping its history |
-| W | `set_competitor_domain` | Move a rival to its real site — the verified suggestion, or one you give |
+### Start
 
-### Proof and research
-| | Tool | |
+| | Tool | What it does |
 |---|---|---|
-| R | `get_search_metrics` | Real Search Console clicks, impressions, CTR, position |
-| R | `list_keywords` | The keyword pool, ranked by Opportunity |
-| R | `research_keywords` | Keyword ideas and long-tail around a topic — on the monthly research allowance |
-| R | `competitor_keywords` | What any domain ranks for, with positions |
-| R | `gap_keywords` | What a rival ranks for that this site doesn't |
-| R | `get_serp` | One keyword's live top-10, People Also Ask, and the AI Overview's cited pages |
-| W | `save_keywords` | Add keywords to the pool — graded and scored right away |
-| R | `list_outreach` | The off-page prospect ledger |
-| R | `list_backlinks` | Every watched link and its verdict: live, dropped, checking, not found |
-| R | `get_workspace` | The connected website: engines, locale, publish mode |
-| R | `list_connections` | Connected CMS destinations |
-| R | `list_activity` | The attributed activity feed |
-| R | `search_guidance` | Sightkick's SEO/AEO methodology |
+| R | `get_workspace` | Get the workspace |
+| R | `get_guidance` | Get SEO and GEO guidance |
+| R | `get_activity` | Get the activity. `view`: log, events, report, receipt |
 
-### Articles
-| | Tool | |
-|---|---|---|
-| R | `list_articles` / `get_article` | Find an article, read its content |
-| W | `create_article_draft` | Write your own draft as semantic HTML |
-| W | `update_article` | Edit an article's content or metadata |
-| W | `generate_article` | Delegate to Sightkick's staged pipeline |
-| R | `score_article` | Grade a draft on four pillars, with fixes |
-| W | `queue_article` / `unqueue_article` | Put it on the plan, or take it off |
+### AI visibility and search
 
-### Backlinks
-| | Tool | |
+| | Tool | What it does |
 |---|---|---|
-| W | `approve_prospect` | Find the editorial contact and draft the pitch — nothing sent |
-| ! | `send_prospect` | Book the pitch into the send queue (a real email from the user's inbox) |
-| ! | `dismiss_prospect` | Decline a prospect for good — its whole site goes on the Blocklist |
-| W | `run_prospect_discovery` | Run the daily prospect discovery now |
-| W | `add_prospect` | Add a page by URL as a prospect, verified and scored like a found one |
-| R | `list_directories` | The directories this business should be listed on, ranked by how often AI answers cite each, with where it stands |
+| R | `get_visibility` | Get AI visibility. `view`: summary, gaps, gap_candidates, competitors, sources, mentions, rival_pages |
+| R | `get_prompts` | Get tracked prompts. `view`: list, prompt, answer, suggestions, rechecks, models |
+| W | `update_prompts` | Change tracked prompts. `action`: track, retire, restore, models |
+| W | `update_competitors` | Change tracked competitors. `action`: track, untrack, set_domain |
+| W | `ask_ai` | Ask AI models now. `action`: ask, batch, recheck, cancel_recheck |
+| R | `get_search_console` | Get Search Console. `view`: metrics, query, detail, export, sitemaps, searches |
+| W | `check_web` | Check the web now. `check`: rank, index, serp, page, crawl |
+
+### Keywords
+
+| | Tool | What it does |
+|---|---|---|
+| R | `get_keywords` | Get keywords. `view`: keywords, topics |
+| W | `research_keywords` | Research keywords. `from`: seed, competitor, gap |
+| W | `update_keywords` | Change keywords. `action`: save, move, set_main, remove, link |
+
+### Pages
+
+| | Tool | What it does |
+|---|---|---|
+| R | `get_pages` | Get pages. `view`: list, page, check_topic, revisions, receipt, shipped, calendar, schedule, images |
+| W | `score_page` | Score a page |
+| ! | `update_page` | Write and change pages. `action`: create, edit, delete, register, unregister, log_change |
+| ! | `update_page_images` | Change a page's images. `action`: list, upload, alt, featured, position, remove |
+| W | `schedule_page` | Schedule pages. `action`: get, place, unplace, set_slots |
+| ! | `publish_page` | Publish pages. `action`: publish, republish, take_down, undo_edit |
+| W | `generate_page` | Have Sightkick write a page |
 
 ### Improvements
-| | Tool | |
-|---|---|---|
-| R | `list_opportunities` | The week's list: published articles where one small change could win clicks or an AI answer back |
-| ! | `approve_opportunity` | Queue one on the next free day — the page is changed that day, the old version kept |
-| ! | `skip_opportunity` | Take one off the list (remembered 60 days) |
-| W | `restore_opportunity` | Bring a skipped one back |
-| W | `unqueue_improvement` | Take a queued change off its day, back into the list |
-| R | `list_improvement_results` | Every change made, and its result 28 days after Google read the page again |
-| ! | `undo_improvement` | Take a live change out of its page — needs `confirm: true` |
-| ! | `redo_improvement` | Put an undone change back and measure it again — needs `confirm: true` |
-| W | `set_improvements_mode` | Automatic or ask-me-first — switching to automatic needs `confirm: true` |
 
-### Shipping
-| | Tool | |
+| | Tool | What it does |
 |---|---|---|
-| R | `get_calendar` | The publishing calendar |
-| W | `reschedule_article` | Move an article, insert-and-slide |
-| W | `set_autopilot_mode` | The writing dial: autopilot, drafts, manual — moving it up needs `confirm: true` |
-| R | `list_actions` | The owner's to-do list: what only a person with the keys can do |
-| W | `complete_action` | Mark one done, with a result note |
-| ! | `skip_action` | Dismiss one (remembered 60 days) |
-| W | `request_action` | Order an article from the pipeline |
-| ! | `publish_article` | Publish to the connected CMS |
+| R | `get_improvements` | Get improvements. `view`: suggested, other_pages, issues, health, todos, results, candidates |
+| W | `update_improvements` | Act on improvements. `action`: approve, skip, unqueue, restore, undo, redo, decline_issue, restore_issue, complete_todo, skip_todo, scan, indexnow |
+
+### Backlinks and outreach
+
+| | Tool | What it does |
+|---|---|---|
+| R | `get_backlinks` | Get backlinks. `view`: ledger, profile, mentions, directories, kit |
+| W | `research_backlinks` | Research backlinks. `lookup`: profile, gap, metrics |
+| ! | `update_backlinks` | Change backlinks. `action`: add, remove, directory, prepare_directory, save_kit, kit_image |
+| R | `get_outreach` | Get outreach. `view`: prospects, prospect, threads, thread, follow_up, sequences, sequence, blocklist, unmatched |
+| W | `update_outreach` | Work the outreach. `action`: add, discover, find_contact, set_contact, lead_with, prepare, write_pitch, draft_reply, discard_reply, edit_message, edit_follow_up, pause_follow_ups, resume_follow_ups, won, lost, dismiss, unblock, link_mail, ignore_mail |
+| ! | `send_outreach` | Send outreach email. `action`: pitch, reply, follow_up |
+
+### Reports
+
+| | Tool | What it does |
+|---|---|---|
+| R | `get_reports` | Get reports |
+| ! | `update_reports` | Change reports. `action`: create, edit, share, rotate_link, remove |
+
+### Settings
+
+| | Tool | What it does |
+|---|---|---|
+| R | `get_settings` | Get settings. `view`: brand, writing, images, offerings, markets, sites, destinations, search_console, inbox, sequences, agents, jobs, usage, models, webhook |
+| ! | `update_brand` | Change the brand profile. `action`: profile, name, add_offering, edit_offering, remove_offering, market, timezone |
+| W | `update_writing` | Change the writing rules. `action`: author, remove_author, voice, key_facts, rules, images |
+| ! | `update_connections` | Change connections. `action`: connect_wordpress, connect_shopify, connect_framer, connect_webhook, edit, test, remove, destination, add_destination, remove_destination, search_console_link, search_console_properties, pick_property, invite_agent, webhook, test_webhook |
+| ! | `update_outreach_setup` | Change the outreach setup. `action`: signature, daily_limit, warm_up, send_window, opt_out, postal_address, mailbox_link, save_sequence, duplicate_sequence, activate_sequence, split_test, end_split_test, archive_sequence, unarchive_sequence, remove_sequence |
+| W | `update_jobs` | Change Sightkick's job settings. `action`: job, floor, warmup |
 
 ## Rules
 
+- **The agent and the owner can do anything at any time.** Sightkick's job
+  settings (Auto, Manual, Off) only say what Sightkick does by itself. No call
+  takes a `confirm`: what an agent may do is its connection's permissions.
+- **Pages go live on the schedule.** Every written page on it goes live on
+  its day, exactly as written, whoever wrote it. A page without a day waits in
+  Unscheduled until the owner or an agent gives it one. Each page says whether
+  Sightkick writes it (`sightkickWrites`): an agent's own page is the agent's
+  to write before its day, or it goes back to Unscheduled as missed.
 - **One grant, one website.** An agent connected to one workspace cannot read
   or touch another.
 - **Every write is attributed.** Each call lands in the workspace's activity
-  feed against the OAuth client that made it.
+  feed against the client that made it.
 - **Limits are enforced, not documented.** One generation in flight and the
-  plan's monthly article budget, 25 scores a day, 20 writes an hour per
-  workspace.
-- **Publishing needs `confirm: true`**, unless the workspace already runs on
-  full auto. It is meant to represent real user approval, never an automatic
-  retry.
+  plan's monthly pages, 25 scores a day, 100 writes an hour per workspace. A
+  metered call's answer says what it used and what's left.
+- **Live pages are safe to hand over.** An edit to a live page needs the hash
+  of the copy it was made on, every agent edit is kept and can be undone, and
+  a page in its first 90 days takes only a dead-link, wrong-fact or typo fix.
 
 ## Links
 
-- [Server page](https://sightkick.so/mcp) — the human version of this document
-- [Agent guide](https://sightkick.so/llm-info) — the same catalog, written for LLM retrieval
+- [Server page](https://sightkick.so/mcp): the human version of this document
+- [Agent reference](https://sightkick.so/llm-info): the same catalog, written for LLM retrieval
+- [Connect your agent](https://sightkick.so/connect/agent.md) · [llms.txt](https://sightkick.so/llms.txt)
 - [Server card](https://app.sightkick.so/.well-known/mcp/server-card.json)
 - [sightkick.so](https://sightkick.so) · [Privacy](https://sightkick.so/privacy)
 
