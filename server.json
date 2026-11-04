@@ -2,14 +2,21 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "so.sightkick/mcp",
   "title": "Sightkick",
-  "description": "Track AI visibility (ChatGPT, Gemini, AI Overviews), research SEO keywords, write, publish, prove.",
-  "version": "1.0.0",
+  "description": "The agentic SEO and GEO platform your AI agent uses to rank on Google and in AI search.",
+  "version": "2.1.0",
   "websiteUrl": "https://sightkick.so/mcp",
   "repository": {
     "url": "https://github.com/sightkick-so/mcp",
     "source": "github",
     "id": "1349299991"
   },
+  "icons": [
+    {
+      "src": "https://sightkick.so/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",

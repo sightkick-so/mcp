@@ -6,14 +6,14 @@
 > the [MCP Registry](https://registry.modelcontextprotocol.io) entry, plus the
 > connection steps and the tool catalog below.
 
-Sightkick is the agentic SEO and GEO platform your website runs on. It tracks
-how ChatGPT, Gemini, Google AI Overviews and AI Mode answer your buyers'
-questions, researches the keywords worth winning, publishes pages on a
-schedule, improves the live ones one measured change at a time, runs outreach
-to the pages AI answers cite, and proves outcomes with Google Search Console
-data.
+Sightkick is the agentic SEO and GEO platform your website runs on, and your
+own AI agent uses it to rank on Google and in AI search. It tracks how AI
+models answer your buyers' questions, researches the keywords worth winning,
+publishes pages on a schedule, improves the live ones one measured change at a
+time, runs outreach to the pages AI answers cite, and proves outcomes with
+Google Search Console data.
 
-This server hands all of it to your agent: 36 tools over streamable
+This server hands all of it to your agent: 37 tools over streamable
 HTTP, authenticated with OAuth 2.1. Agent access comes with both packages
 (Standard and Pro), never as an add-on.
 
@@ -23,9 +23,10 @@ HTTP, authenticated with OAuth 2.1. Agent access comes with both packages
 https://app.sightkick.so/mcp
 ```
 
-There is no API key. The first call opens a sign-in, and one OAuth grant is
-bound to one workspace (one website): the consent screen carries a workspace
-selector.
+Connecting and listing the tools need no sign-in. The first tool call asks
+for one (HTTP 401 with the OAuth challenge), and one OAuth grant is bound to
+one workspace (one website): the consent screen carries a workspace selector.
+An agent that runs on its own sends a workspace API key instead (below).
 
 ## Connect
 
@@ -35,7 +36,8 @@ selector.
 claude mcp add --transport http sightkick https://app.sightkick.so/mcp
 ```
 
-Then `/mcp`, pick sightkick and approve the sign-in.
+When the first tool call asks for the sign-in: `/mcp`, pick sightkick and
+approve it.
 
 **Codex**
 
@@ -129,9 +131,9 @@ takes a page down or sends an email (destructiveHint).
 |---|---|---|
 | R | `get_backlinks` | Get backlinks. `view`: ledger, profile, mentions, directories, kit |
 | W | `research_backlinks` | Research backlinks. `lookup`: profile, gap, metrics |
-| ! | `update_backlinks` | Change backlinks. `action`: add, remove, directory, prepare_directory, save_kit, kit_image |
+| ! | `update_backlinks` | Change backlinks. `action`: add, remove, directory, prepare_directory, save_kit, kit_image, start_directories, rebuild_kit |
 | R | `get_outreach` | Get outreach. `view`: prospects, prospect, threads, thread, follow_up, sequences, sequence, blocklist, unmatched |
-| W | `update_outreach` | Work the outreach. `action`: add, discover, find_contact, set_contact, lead_with, prepare, write_pitch, draft_reply, discard_reply, edit_message, edit_follow_up, pause_follow_ups, resume_follow_ups, won, lost, dismiss, unblock, link_mail, ignore_mail |
+| W | `update_outreach` | Work the outreach. `action`: add, discover, find_contact, set_contact, lead_with, prepare, write_pitch, draft_reply, answer_offer, handled, discard_reply, edit_message, edit_follow_up, pause_follow_ups, resume_follow_ups, won, lost, dismiss, unblock, link_mail, ignore_mail |
 | ! | `send_outreach` | Send outreach email. `action`: pitch, reply, follow_up |
 
 ### Reports
@@ -145,18 +147,22 @@ takes a page down or sends an email (destructiveHint).
 
 | | Tool | What it does |
 |---|---|---|
-| R | `get_settings` | Get settings. `view`: brand, writing, images, offerings, markets, sites, destinations, search_console, inbox, sequences, agents, jobs, usage, models, webhook |
-| ! | `update_brand` | Change the brand profile. `action`: profile, name, add_offering, edit_offering, remove_offering, market, timezone |
+| R | `get_settings` | Get settings. `view`: brand, writing, images, offerings, markets, sites, destinations, search_console, inbox, sequences, agents, jobs, usage, models, webhook, plan, notifications |
+| ! | `update_brand` | Change the brand profile. `action`: profile, name, add_offering, edit_offering, remove_offering, offering_image, remove_offering_image, market, timezone |
 | W | `update_writing` | Change the writing rules. `action`: author, remove_author, voice, key_facts, rules, images |
-| ! | `update_connections` | Change connections. `action`: connect_wordpress, connect_shopify, connect_framer, connect_webhook, edit, test, remove, destination, add_destination, remove_destination, search_console_link, search_console_properties, pick_property, invite_agent, webhook, test_webhook |
-| ! | `update_outreach_setup` | Change the outreach setup. `action`: signature, daily_limit, warm_up, send_window, opt_out, postal_address, mailbox_link, save_sequence, duplicate_sequence, activate_sequence, split_test, end_split_test, archive_sequence, unarchive_sequence, remove_sequence |
+| ! | `update_connections` | Change connections. `action`: connect_wordpress, connect_shopify, connect_framer, connect_webhook, edit, test, remove, destination, add_destination, remove_destination, search_console_link, search_console_properties, pick_property, disconnect_search_console, invite_agent, webhook, test_webhook |
+| ! | `update_outreach_setup` | Change the outreach setup. `action`: signature, daily_limit, warm_up, send_window, opt_out, postal_address, mailbox_link, disconnect_inbox, managed_domains, check_domain, create_managed_inbox, save_sequence, duplicate_sequence, activate_sequence, split_test, end_split_test, archive_sequence, unarchive_sequence, remove_sequence |
 | W | `update_jobs` | Change Sightkick's job settings. `action`: job, floor, warmup |
+| ! | `update_account` | Change the plan, notifications and brands. `action`: preview_plan, change_plan, undo_downgrade, pause_plan, resume_plan, cancel_plan, notifications, create_brand, delete_brand |
 
 ## Rules
 
-- **The agent and the owner can do anything at any time.** Sightkick's job
-  settings (Auto, Manual, Off) only say what Sightkick does by itself. No call
-  takes a `confirm`: what an agent may do is its connection's permissions.
+- **The agent is a user.** Whatever the owner can do in the app, their agent
+  can do, at any time: every reply, an offer's answer, the listing kit,
+  directory submissions. Sightkick's job settings (Auto, Manual, Off) and its
+  own rules (waits after a page goes live, the warm-up, the pitch floor, the
+  duplicate check) only govern what Sightkick does by itself. No call takes a
+  `confirm`: what an agent may do is its connection's permissions.
 - **Pages go live on the schedule.** Every written page on it goes live on
   its day, exactly as written, whoever wrote it. A page without a day waits in
   Unscheduled until the owner or an agent gives it one. Each page says whether
@@ -167,18 +173,20 @@ takes a page down or sends an email (destructiveHint).
 - **Every write is attributed.** Each call lands in the workspace's activity
   feed against the client that made it.
 - **Limits are enforced, not documented.** One generation in flight and the
-  plan's monthly pages, 25 scores a day, 100 writes an hour per workspace. A
-  metered call's answer says what it used and what's left.
+  plan's monthly pages, 25 scores a day, and a runaway guard of 1,000
+  writes an hour per workspace. A metered call's answer says what it used
+  and what's left.
 - **Live pages are safe to hand over.** An edit to a live page needs the hash
-  of the copy it was made on, every agent edit is kept and can be undone, and
-  a page in its first 90 days takes only a dead-link, wrong-fact or typo fix.
+  of the copy it was made on, and every agent edit is kept and can be undone,
+  at any age.
 
 ## Links
 
 - [Server page](https://sightkick.so/mcp): the human version of this document
 - [Agent reference](https://sightkick.so/llm-info): the same catalog, written for LLM retrieval
 - [Connect your agent](https://sightkick.so/connect/agent.md) · [llms.txt](https://sightkick.so/llms.txt)
-- [Server card](https://app.sightkick.so/.well-known/mcp/server-card.json)
+- Server cards: [SEP-2127](https://app.sightkick.so/mcp/server-card) ·
+  [with the tools](https://app.sightkick.so/.well-known/mcp/server-card.json)
 - [sightkick.so](https://sightkick.so) · [Privacy](https://sightkick.so/privacy)
 
 MIT © Sprike LLC (Sightkick)
