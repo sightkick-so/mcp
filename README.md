@@ -46,11 +46,13 @@ codex mcp add sightkick --url https://app.sightkick.so/mcp
 codex mcp login sightkick
 ```
 
-**Claude** (desktop and claude.ai): Settings → Connectors → "Add custom
-connector", paste the endpoint.
+**Claude** (desktop and claude.ai): Customize → Connectors → "+ Add" → "Add
+custom connector", paste the endpoint. On Team and Enterprise an owner adds it
+once in Organization settings → Connectors.
 
-**ChatGPT**: Settings → Connectors, turn on Developer mode, "Add", paste the
-endpoint.
+**ChatGPT** (web only): Plugins → + → "Add custom MCP server", paste the
+endpoint under Connection, "Create as a plugin". No Developer mode. Changes
+need Business, Enterprise or Edu: Pro connects read-only.
 
 **Anything else that speaks MCP over streamable HTTP**: add a remote server
 and paste the same endpoint. Every client's steps, written for an agent to
@@ -133,7 +135,7 @@ takes a page down or sends an email (destructiveHint).
 | W | `research_backlinks` | Research backlinks. `lookup`: profile, gap, metrics |
 | ! | `update_backlinks` | Change backlinks. `action`: add, remove, directory, prepare_directory, save_kit, kit_image, start_directories, rebuild_kit |
 | R | `get_outreach` | Get outreach. `view`: prospects, prospect, threads, thread, follow_up, sequences, sequence, blocklist, unmatched |
-| W | `update_outreach` | Work the outreach. `action`: add, discover, find_contact, set_contact, lead_with, prepare, write_pitch, draft_reply, answer_offer, handled, discard_reply, edit_message, edit_follow_up, pause_follow_ups, resume_follow_ups, won, lost, dismiss, unblock, link_mail, ignore_mail |
+| W | `update_outreach` | Work the outreach. `action`: add, discover, find_contact, set_contact, lead_with, prepare, write_pitch, draft_reply, handled, discard_reply, edit_message, edit_follow_up, pause_follow_ups, resume_follow_ups, won, lost, dismiss, unblock, link_mail, ignore_mail |
 | ! | `send_outreach` | Send outreach email. `action`: pitch, reply, follow_up |
 
 ### Reports
